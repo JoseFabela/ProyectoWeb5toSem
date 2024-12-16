@@ -1,0 +1,93 @@
+﻿@model prueba.Models.HorarioAtencion
+@{
+    ViewData["Title"] = "Horario Atencion";
+    List<prueba.Models.HorarioAtencion> listaHorarios = ViewBag.listaHorarios;
+}
+
+<h1>Index</h1>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row card-title">
+                    <div class="card-title mr-auto">
+                        <h3 class="h3">Horario de Atencion</h3>
+                    </div>
+                    <div>
+                        <a data-toggle="collapse" href="#formacreate" role="button" aria-expanded="true" aria-controls="collapseIt">
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="collapse show" id="formacreate">
+                        @using (Html.BeginForm("Index", "HorarioAtencions", FormMethod.Post, new { @class = "form-inline", role = "form", @id = "formaId" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(x => x.id)
+
+                            <div class="form-group mr-2">
+                                @Html.LabelFor(model => model.dia, "Dia", htmlAttributes: new { @class = "control-label mr-2" })
+                                @Html.EditorFor(model => model.dia, new { htmlAttributes = new { @class = "form-control", size = "40", placeholder = "Dia" } })
+                                @Html.ValidationMessageFor(model => model.dia, "", new { @class = "text-danger" })
+
+  
+                                @Html.LabelFor(model => model.apertura, "Apertura", htmlAttributes: new { @class = "control-label mr-2 ml-2" })
+                                @Html.EditorFor(model => model.apertura, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                                @Html.ValidationMessageFor(model => model.apertura, "", new { @class = "text-danger" })
+
+                                @Html.LabelFor(model => model.cierre, "Cierre", htmlAttributes: new { @class = "control-label mr-2 ml-2" })
+                                @Html.EditorFor(model => model.cierre, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                                @Html.ValidationMessageFor(model => model.cierre, "", new { @class = "text-danger" })
+
+
+                            </div>
+
+
+
+                            <div class="form-group mr-2 ml-2">
+                                <button type="submit" class="btn btn-primary font-weight-bold" id="btnGuardar">Guardar</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="datatables-reponsive" class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Dia</th>
+                            <th>Apertura</th>
+                            <th>Cierre</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (listaHorarios != null)
+                        {
+                            foreach (var item in listaHorarios)
+                            {
+                                <tr id="trId_@item.id">
+                                    <td>@item.dia</td>
+                                    <td>@item.apertura</td>
+                                    <td>@item.cierre</td>
+                                    <td>@item.estado</td>
+
+                                    <td>
+                                        <a class="btn btn-primary" asp-action="Edit" asp-controller="HorarioAtencions" asp-route-id="@item.id">
+                                            <i class="align-middle mr-2" data-feather="edit"></i>
+                                            <span class="font-weight-bold">Editar</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

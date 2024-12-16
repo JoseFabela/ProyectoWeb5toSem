@@ -1,0 +1,63 @@
+﻿@model prueba.Models.AlquilerSala
+
+<form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.id)
+
+            <!-- Sala VIP -->
+            <div class="form-group">
+                <label asp-for="SalaVipId" class="control-label">Sala VIP</label>
+                <select asp-for="SalaVipId" class="form-control" asp-items="ViewBag.SalaVipId">
+                    <option value="">-- Seleccione una Sala VIP --</option>
+                </select>
+                <span asp-validation-for="SalaVipId" class="text-danger"></span>
+            </div>
+
+            <!-- Empleado -->
+            <div class="form-group">
+                <label asp-for="EmpleadoId" class="control-label">Empleado</label>
+                <select asp-for="EmpleadoId" class="form-control" asp-items="ViewBag.EmpleadoId">
+                    <option value="">-- Seleccione un Empleado --</option>
+                </select>
+                <span asp-validation-for="EmpleadoId" class="text-danger"></span>
+            </div>
+
+            <!-- Jugador -->
+            <div class="form-group">
+                <label asp-for="JugadorId" class="control-label">Jugador</label>
+                <select asp-for="JugadorId" class="form-control" asp-items="ViewBag.JugadorId">
+                    <option value="">-- Seleccione un Jugador --</option>
+                </select>
+                <span asp-validation-for="JugadorId" class="text-danger"></span>
+            </div>
+
+            <!-- Fecha de Inicio -->
+            <div class="form-group">
+                <label asp-for="fechaInicio" class="control-label">Fecha de Inicio</label>
+                <input asp-for="fechaInicio" class="form-control" type="date" />
+                <span asp-validation-for="fechaInicio" class="text-danger"></span>
+            </div>
+
+            <!-- Fecha de Fin -->
+            <div class="form-group">
+                <label asp-for="fechaFin" class="control-label">Fecha de Fin</label>
+                <input asp-for="fechaFin" class="form-control" type="date" />
+                <span asp-validation-for="fechaFin" class="text-danger"></span>
+            </div>
+
+            <!-- Estado -->
+            <div class="form-group">
+                <label asp-for="estado" class="control-label">Estado</label>
+                <select asp-for="estado" class="form-control">
+                    <option value="activo" selected>Activo</option>
+                    <option value="inactivo">Inactivo</option>
+                </select>
+                <span asp-validation-for="estado" class="text-danger"></span>
+            </div>
+
+            <!-- Botones -->
+            <div class="form-group mt-2">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>

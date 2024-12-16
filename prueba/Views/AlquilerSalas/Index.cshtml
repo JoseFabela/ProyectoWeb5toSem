@@ -1,0 +1,110 @@
+﻿@model prueba.Models.AlquilerSala
+
+@{
+    ViewData["Title"] = "Alquiler de Salas";
+    List<prueba.Models.AlquilerSala> listaAlquilerSalas = ViewBag.listaAlquilerSalas;
+}
+
+<h1>Alquiler de Salas</h1>
+
+<!-- Mensaje de confirmación -->
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">@TempData["Mensaje"]</div>
+}
+
+<!-- Formulario de creación -->
+<div class="row">
+    <div class="col-12">
+        <form asp-action="Index" method="post">
+            @Html.AntiForgeryToken()
+
+            <!-- Selección de Sala VIP -->
+            <div class="form-group">
+                <label asp-for="SalaVipId" class="control-label">Sala VIP</label>
+                <select asp-for="SalaVipId" class="form-control" asp-items="ViewBag.SalaVipId">
+                    <option value="">-- Seleccione una Sala VIP --</option>
+                </select>
+                <span asp-validation-for="SalaVipId" class="text-danger"></span>
+            </div>
+
+            <!-- Selección de Empleado -->
+            <div class="form-group">
+                <label asp-for="EmpleadoId" class="control-label">Empleado</label>
+                <select asp-for="EmpleadoId" class="form-control" asp-items="ViewBag.EmpleadoId">
+                    <option value="">-- Seleccione un Empleado --</option>
+                </select>
+                <span asp-validation-for="EmpleadoId" class="text-danger"></span>
+            </div>
+
+            <!-- Selección de Jugador -->
+            <div class="form-group">
+                <label asp-for="JugadorId" class="control-label">Jugador</label>
+                <select asp-for="JugadorId" class="form-control" asp-items="ViewBag.JugadorId">
+                    <option value="">-- Seleccione un Jugador --</option>
+                </select>
+                <span asp-validation-for="JugadorId" class="text-danger"></span>
+            </div>
+
+            <!-- Fechas -->
+            <div class="form-group">
+                <label asp-for="fechaInicio" class="control-label">Fecha de Inicio</label>
+                <input asp-for="fechaInicio" class="form-control" type="date" />
+                <span asp-validation-for="fechaInicio" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="fechaFin" class="control-label">Fecha de Fin</label>
+                <input asp-for="fechaFin" class="form-control" type="date" />
+                <span asp-validation-for="fechaFin" class="text-danger"></span>
+            </div>
+
+            <!-- Botón Guardar -->
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+    </div>
+</div>
+
+<!-- Tabla de registros existentes -->
+<div class="row mt-3">
+    <div class="col-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Sala VIP</th>
+                    <th>Empleado</th>
+                    <th>Jugador</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (listaAlquilerSalas != null && listaAlquilerSalas.Any())
+                {
+                    foreach (var item in listaAlquilerSalas)
+                    {
+                        <tr>
+                            <td>@item.SalaVip?.nombre</td>
+                            <td>@item.Empleado?.Nombre</td>
+                            <td>@item.Jugador?.Nombre</td>
+                            <td>@item.fechaInicio.ToString("dd/MM/yyyy")</td>
+                            <td>@item.fechaFin.ToString("dd/MM/yyyy")</td>
+                            <td>@item.estado</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.id" class="btn btn-primary">Editar</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center">No hay registros disponibles</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

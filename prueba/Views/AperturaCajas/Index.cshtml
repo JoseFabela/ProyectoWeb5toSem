@@ -1,0 +1,91 @@
+﻿@model prueba.Models.AperturaCaja
+
+@{
+    ViewData["Title"] = "Apertura de Cajas";
+    List<prueba.Models.AperturaCaja> listaAperturaCajas = ViewBag.listaAperturaCajas;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row card-title">
+                    <div class="card-title mr-auto">
+                        <h3 class="h3">Apertura de Cajas</h3>
+                    </div>
+                    <div>
+                        <a data-toggle="collapse" href="#formacreate" role="button" aria-expanded="true" aria-controls="collapseIt">
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="collapse show" id="formacreate">
+                        @using (Html.BeginForm("Index", "AperturaCajas", FormMethod.Post, new { @class = "form-inline", role = "form", @id = "formaId" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(x => x.Id);
+
+                            <div class="form-group mr-2">
+                                @Html.LabelFor(model => model.EmpleadoId, "Empleado", htmlAttributes: new { @class = "control-label mr-2" })
+                                <select asp-for="EmpleadoId" class="form-control" asp-items="ViewBag.EmpleadoId">
+                                    <option value="">-- Seleccione un Empleado --</option>
+                                </select>
+                                @Html.ValidationMessageFor(model => model.EmpleadoId, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group mr-2">
+                                @Html.LabelFor(model => model.Monto, "Monto", htmlAttributes: new { @class = "control-label mr-2" })
+                                @Html.EditorFor(model => model.Monto, new { htmlAttributes = new { @class = "form-control", size = "40", placeholder = "Monto" } })
+                                @Html.ValidationMessageFor(model => model.Monto, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group mr-2">
+                                @Html.LabelFor(model => model.Fecha, "Fecha", htmlAttributes: new { @class = "control-label mr-2" })
+                                @Html.EditorFor(model => model.Fecha, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                                @Html.ValidationMessageFor(model => model.Fecha, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group mr-2">
+                                <button type="submit" class="btn btn-primary font-weight-bold" id="btnGuardar">Guardar</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="datatables-reponsive" class="table table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Empleado</th>
+                            <th>Monto</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in listaAperturaCajas)
+                        {
+                            <tr id="trId_@item.Id">
+                                <td>@(item.Empleado?.Nombre ?? "Sin asignar")</td>
+                                <td>@item.Monto.ToString("C")</td>
+                                <td>@item.Fecha?.ToString("dd/MM/yyyy")</td>
+                                <td>@item.estado</td>
+                                <td>
+                                   <a class="btn btn-primary" asp-action="Edit" asp-controller="AperturaCajas" asp-route-id="@item.Id">
+            <i class="align-middle mr-2" data-feather="edit"></i>
+            <span class="font-weight-bold">Editar</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
